@@ -1,0 +1,22 @@
+--- original/mono/utils/comm.py
++++ cpu/mono/utils/comm.py
+@@ -5,7 +5,7 @@
+ from collections import defaultdict, OrderedDict
+ import os
+ import socket
+-from mmcv.utils import collect_env as collect_base_env
++from mmengine.utils.dl_utils import collect_env as collect_base_env
+ try:
+     from mmcv.utils import get_git_hash
+ except:
+--- original/mono/model/decode_heads/RAFTDepthNormalDPTDecoder5.py
++++ cpu/mono/model/decode_heads/RAFTDepthNormalDPTDecoder5.py
+@@ -792,7 +792,7 @@
+         self.relu = nn.ReLU(inplace=True)
+     
+     def get_bins(self, bins_num):
+-        depth_bins_vec = torch.linspace(math.log(self.min_val), math.log(self.max_val), bins_num, device="cuda")
++        depth_bins_vec = torch.linspace(math.log(self.min_val), math.log(self.max_val), bins_num, device=next(self.parameters()).device)
+         depth_bins_vec = torch.exp(depth_bins_vec)
+         return depth_bins_vec
+     

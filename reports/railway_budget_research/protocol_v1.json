@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "methods": {
+    "roi_score": {
+      "uncertainty": true,
+      "coverage": true,
+      "geometry": false,
+      "focus_height": 192,
+      "mode": "normal",
+      "mean_fine_budget": 1.0,
+      "easy_score": 0.85,
+      "easy_min_height": 128,
+      "hard_marginal": 0.45
+    },
+    "no_uncertainty": {
+      "uncertainty": false,
+      "coverage": true,
+      "geometry": false,
+      "focus_height": 192,
+      "mode": "normal",
+      "mean_fine_budget": 1.0,
+      "easy_score": 0.85,
+      "easy_min_height": 128,
+      "hard_marginal": 0.45
+    },
+    "no_coverage": {
+      "uncertainty": true,
+      "coverage": false,
+      "geometry": false,
+      "focus_height": 192,
+      "mode": "normal",
+      "mean_fine_budget": 1.0,
+      "easy_score": 0.85,
+      "easy_min_height": 128,
+      "hard_marginal": 0.45
+    },
+    "geometry": {
+      "uncertainty": true,
+      "coverage": true,
+      "geometry": true,
+      "focus_height": 192,
+      "mode": "normal",
+      "mean_fine_budget": 1.0,
+      "easy_score": 0.85,
+      "easy_min_height": 128,
+      "hard_marginal": 0.45
+    },
+    "dynamic": {
+      "uncertainty": true,
+      "coverage": true,
+      "geometry": false,
+      "focus_height": 192,
+      "mode": "dynamic",
+      "mean_fine_budget": 1.0,
+      "easy_score": 0.85,
+      "easy_min_height": 128,
+      "hard_marginal": 0.45
+    },
+    "dynamic_plus": {
+      "uncertainty": true,
+      "coverage": true,
+      "geometry": false,
+      "focus_height": 192,
+      "mode": "dynamic",
+      "mean_fine_budget": 1.2,
+      "easy_score": 0.85,
+      "easy_min_height": 128,
+      "hard_marginal": 0.45
+    },
+    "hard3": {
+      "uncertainty": true,
+      "coverage": true,
+      "geometry": false,
+      "focus_height": 192,
+      "mode": "hard",
+      "mean_fine_budget": 1.0,
+      "easy_score": 0.85,
+      "easy_min_height": 128,
+      "hard_marginal": 0.45
+    },
+    "focus128": {
+      "uncertainty": true,
+      "coverage": true,
+      "geometry": false,
+      "focus_height": 128,
+      "mode": "normal",
+      "mean_fine_budget": 1.0,
+      "easy_score": 0.85,
+      "easy_min_height": 128,
+      "hard_marginal": 0.45
+    }
+  },
+  "baselines": [
+    "global",
+    "fixed_top",
+    "old_adaptive",
+    "fixed_focus",
+    "compact",
+    "old_multiband"
+  ],
+  "primary_score": 0.25,
+  "score_floor": 0.001,
+  "IoU": 0.5,
+  "fine_hw": [
+    256,
+    1280
+  ],
+  "coarse_hw": [
+    384,
+    640
+  ],
+  "selection": "development smoke64 -> screen384; at most two scale choices (192,128); select one fixed-budget ROI method on validation384 by mean(recall,small-recall), tie lower UPI. Dynamic eligible only if recall/small-recall both >= selected fixed-2 minus1pp AND observed calls<=2. No tuning on historical test or new external.",
+  "data_scope": "Historical test2770 and external60 previously seen; new external is metadata-only group selection before reading images/labels. No safety guarantee or unseen actor claim.",
+  "timing": "Accuracy cache reuse allowed only for identical image SHA/model/crop. No cached/PC time is FPGA latency. Board timing decoded BGR->fused outputs, init/cold/warmup/read/draw/save separated; keep slow frames.",
+  "training": "CPU-only and partial annotations: stop large training, retain original weights/topology. No pseudo-labels presented as truth.",
+  "stages": [
+    "A audit + miss diagnosis + board profiler",
+    "B bounded image-only ROI and budget experiments",
+    "C matching FP32/INT8 diagnostic; training conditional",
+    "D measured software execution experiments",
+    "E frozen validation, fresh external, board alternating and stability",
+    "F reproducible report and evidence, no paper"
+  ],
+  "board": "SSH first attempt handshake timeout; attach-only matching O8, no programming authorization for this round."
+}
